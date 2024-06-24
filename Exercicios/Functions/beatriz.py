@@ -2,6 +2,7 @@ import numpy as np
 from scipy.linalg import dft
 
 # scalar-vector product
+
 def scalar_vec_real(a, x, check_input=True):
     '''
     Compute the product of a scalar a and vector x, where
@@ -97,7 +98,6 @@ def dot_real(x, y, check_input=True):
     result : scalar
         Dot product of x and y.
     '''
-    
     
     return result
 
@@ -283,41 +283,13 @@ def outer_complex(x, y, check_input=True, function='simple'):
     outer_real = {
         'simple' : outer_real_simple
         'row' : outer_real_row
-        'columns' : outer_real_column
+        'column' : outer_real_column
     }
 
 
     # use the syntax outer_real[function] to specify the
     # the outer_real_* function.
 
-    return result
-
-
-# vectors-norms
-def vec_norm(x, p):
-    '''
-    Compute the p-norm of a given real vector 'x'.
-
-    Parameters
-    ----------
-    x : numpy array 1d
-        Vector for which the norm will be computed.
-    p : positive integer
-        Positive integer defining the norm. The possible values 
-        0, 1 and 2 define the inf-, 1- and 2-norm, respectively.
-
-    Returns
-    -------
-    result : positive scalar
-        Positive scalar representing the computed p-norm.
-    '''
-    if check_input is True:
-        assert type(x) == np.ndarray, 'x must be a numpy array'
-        assert x.ndim == 1, 'x must have ndim = 1'
-        assert isinstance(p, (float, int)), 'p must be a scalar'
-        if p == 0:
-            elif
-    
     return result
 
 
@@ -407,7 +379,7 @@ def matvec_real_columns(A, x, check_input=True):
     return result
 
 
-def matvec_complex(A, x, check_input=True):
+def matvec_complex(A, x, check_input=True, function='dot'):
     '''
     Compute the matrix-vector product of an NxM matrix A and
     a Mx1 vector x.
@@ -423,11 +395,25 @@ def matvec_complex(A, x, check_input=True):
     check_input : boolean
         If True, verify if the input is valid. Default is True.
 
+    function : string
+        Defines the matvec_real function to be used. The possible
+        values are 'simple', 'dot' and 'columns'.
+
     Returns
     -------
     result : array 1D
         Product of A and x.
     '''
+
+    matvec_real = {
+        'simple' : matvec_real_simple
+        'dot' : matvec_real_dot
+        'columns' : matvec_real_columns
+    }
+
+
+    # use the syntax matvec_real[function] to specify the
+    # the matvec_real_* function.
 
 
     return result
@@ -485,6 +471,32 @@ def matmat_real_dot(A, B, check_input=True):
     return result
 
 
+def matmat_real_rows(A, B, check_input=True):
+    '''
+    Compute the matrix-matrix product of A and B, where
+    A in R^NxM and B in R^MxP. The imaginary parts are ignored.
+
+    The code replaces two "fors" by a matrix-vector product defining
+    a row of the resultant matrix.
+
+    Parameters
+    ----------
+    A, B : 2D arrays
+        Real matrices.
+
+    check_input : boolean
+        If True, verify if the input is valid. Default is True.
+
+    Returns
+    -------
+    result : 2D array
+        Product of A and B.
+    '''
+
+
+    return result
+
+
 def matmat_real_columns(A, B, check_input=True):
     '''
     Compute the matrix-matrix product of A and B, where
@@ -511,38 +523,12 @@ def matmat_real_columns(A, B, check_input=True):
     return result
 
 
-def matmat_real_matvec(A, B, check_input=True):
-    '''
-    Compute the matrix-matrix product of A and B, where
-    A in R^NxM and B in R^MxP. The imaginary parts are ignored.
-
-    The code replaces two "fors" by a matrix-vector product defining
-    a row of the resultant matrix.
-
-    Parameters
-    ----------
-    A, B : 2D arrays
-        Real matrices.
-
-    check_input : boolean
-        If True, verify if the input is valid. Default is True.
-
-    Returns
-    -------
-    result : 2D array
-        Product of A and B.
-    '''
-
-
-    return result
-
-
 def matmat_real_outer(A, B, check_input=True):
     '''
     Compute the matrix-matrix product of A and B, where
     A in R^NxM and B in R^MxP. The imaginary parts are ignored.
 
-    The code replaces two "for" by an outer product.
+    The code replaces two "fors" by an outer product.
 
     Parameters
     ----------
@@ -562,7 +548,7 @@ def matmat_real_outer(A, B, check_input=True):
     return result
 
 
-def matmat_complex(A, B, check_input=True):
+def matmat_complex(A, B, check_input=True, function='simple'):
     '''
     Compute the matrix-matrix product of A and B, where
     A in C^NxM and B in C^MxP.
@@ -575,11 +561,27 @@ def matmat_complex(A, B, check_input=True):
     check_input : boolean
         If True, verify if the input is valid. Default is True.
 
+    function : string
+        Defines the matmat_real function to be used. The possible
+        values are 'simple', 'dot', 'rows', 'columns' or 'outer'.
+
     Returns
     -------
     result : 2D array
         Product of A and B.
     '''
+
+    matmat_real = {
+        'simple' : matmat_real_simple,
+        'dot' : matmat_real_dot,
+        'rows' : matmat_real_rows,
+        'columns' : matmat_real_columns,
+        'outer' : matmat_real_outer
+    }
+
+
+    # use the syntax matmat_real[function] to specify the
+    # the matmat_real_* function.
 
 
     return result
